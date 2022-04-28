@@ -26,6 +26,6 @@ jobs:
 
       - uses: ineshbose/wiki-action@v1
         with:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           WIKI_DIR: 'docs'
           AUTO_SIDEBAR: true
