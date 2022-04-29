@@ -1,19 +1,7 @@
-* [A1's Replacement Title](A1.md)
-* [A2](A2.md)
-* [A3](A3.md)
-* [Home.md](Home.md)
-* [dash-test.md](dash-test.md)
-* [underscore_test.md](underscore_test.md)
-  * [B2](B-B2.md)
-  * [B1](B-B1.md)
-    * [C1.md](B-C-C1.md)
-    * [C2.md](B-C-C2.md)
-    * [C3.md](B-C-C3.md)
-    * [D1.md](B-D-D1.md)
-    * [D2.md](B-D-D2.md)
-    * [D3.md](B-D-D3.md)
-  * [E1.md](E-E1.md)
-  * [E2.md](E-E2.md)
-    * [F1.md](E-F-F1.md)
-    * [G1.md](E-G-G1.md)
-    * [G2.md](E-G-G2.md)
+* **Coding Standards**
+  * **Python**
+    * [Python Overview](Coding_Standards-Python-Overview)
+  * **PHP**
+  * [Javascript](Coding_Standards-Javascript-index)
+* **Pantheon**
+* **Tools**
