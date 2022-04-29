@@ -21,6 +21,18 @@ for filename in os.listdir(wikiroot):
 
 toc = []
 
+def clean_ordering_numbers_from_path(arg):
+    exploded_path = str(arg).split('/')
+    new_path = []
+    for segment in exploded_path:
+        if re.search('^[0-9]+\-', segment):
+            segment = segment.split('-', 1)[1]
+        new_path.append(segment)
+    fixed_path = os.path.join(*new_path)
+    print(f'Fixed: {fixed_path}')
+    return fixed_path
+
+
 for root, dirs, files in os.walk(docroot):
     #print(os.path.relpath(root, docroot))
     print(f'root: {root}')
@@ -32,8 +44,9 @@ for root, dirs, files in os.walk(docroot):
 
     if(os.path.exists(Path(root, 'index.md'))):
         print('index found')
-        dir_path = Path(root, 'index.md')
-        dir_path = str(Path(os.path.relpath(root, docroot), 'index.md')).replace('/', '-').rsplit('.', 1)[0]
+
+        dir_path = clean_ordering_numbers_from_path(Path(os.path.relpath(root, docroot), 'index.md')).replace('/', '-').rsplit('.', 1)[0]
+
 
     if dir_title != '.':
         toc.append({'depth': depth, 'title': dir_title, 'path': dir_path, 'is_dir': True})
@@ -43,17 +56,21 @@ for root, dirs, files in os.walk(docroot):
 
         src = Path(root, f)
 
-
-
-
         print("src: " + str(src))
 
-        #print(f"Depth: {depth}")
-        dst_filename = str(Path(os.path.relpath(root, docroot), f)).replace('/', '-')
-        title = str(f)
-        if re.search('^[0-9]+\-',f):
-            dst_filename = str(Path(os.path.relpath(root, docroot), f.split('-', 1)[1])).replace('/', '-')
-            title = str(f.split('-', 1)[1])
+        # exploded_path = str(Path(os.path.relpath(root, docroot), f)).split('/')
+        # new_path = []
+        # for segment in exploded_path:
+        #     if re.search('^[0-9]+\-',segment):
+        #         segment = segment.split('-', 1)[1]
+        #     new_path.append(segment)
+        # fixed_path = os.path.join(*new_path)
+        # print(f'Fixed: {fixed_path}')
+
+        fixed_path = clean_ordering_numbers_from_path(Path(os.path.relpath(root, docroot), f))
+
+        dst_filename = fixed_path.replace('/', '-')
+        title = str(clean_ordering_numbers_from_path(f))
 
         path = dst_filename.rsplit('.', 1)[0]
         dst = Path(wikiroot, dst_filename)
@@ -72,9 +89,6 @@ for root, dirs, files in os.walk(docroot):
 
         if str(f) == 'index.md':
             continue
-
-
-
 
         with open(src) as infile:
             firstline = infile.readline()
