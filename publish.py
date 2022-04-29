@@ -3,6 +3,7 @@
 import os
 import shutil
 from pathlib import Path
+import re
 
 docroot = 'docs'
 wikiroot = 'wiki'
@@ -49,7 +50,14 @@ for root, dirs, files in os.walk(docroot):
 
         #print(f"Depth: {depth}")
         dst_filename = str(Path(os.path.relpath(root, docroot), f)).replace('/', '-')
+        title = str(f)
+        if re.search('^[0-9]+\-',f):
+            dst_filename = str(Path(os.path.relpath(root, docroot), f.split('-', 1)[1])).replace('/', '-')
+            title = str(f.split('-', 1)[1])
+
+        path = dst_filename.rsplit('.', 1)[0]
         dst = Path(wikiroot, dst_filename)
+
         print("dst: " + str(dst))
         shutil.copy(src, dst)
 
@@ -66,8 +74,7 @@ for root, dirs, files in os.walk(docroot):
             continue
 
 
-        title = str(f)
-        path = dst_filename.rsplit('.', 1)[0]
+
 
         with open(src) as infile:
             firstline = infile.readline()
@@ -82,24 +89,28 @@ for root, dirs, files in os.walk(docroot):
 
 print(toc)
 
-with open(Path(wikiroot, '_Sidebar.md'), 'w') as outfile:
-    for item in toc:
-        if item['is_dir']:
-            for _ in range(item['depth']):
-                outfile.write('  ')
-            if item['path'] != None:
-                outfile.write(f'* [{ item["title"] }]({item["path"]})')
-            else:
-                outfile.write(f'* **{item["title"]}**')
+tocstring = ''
+
+for item in toc:
+    if item['is_dir']:
+        for _ in range(item['depth']):
+            tocstring += '  '
+        if item['path'] != None:
+            tocstring += f'* [{item["title"]}]({item["path"]})'
         else:
-            for _ in range(item['depth']):
-                outfile.write('  ')
-            outfile.write(f'* [{ item["title"] }]({item["path"]})')
-        outfile.write('\n')
+            tocstring += f'* **{item["title"]}**'
+    else:
+        for _ in range(item['depth']):
+            tocstring += '  '
+        tocstring += f'* [{item["title"]}]({item["path"]})'
+    tocstring += '\n'
+
+with open(Path(wikiroot, '_Sidebar.md'), 'w') as outfile:
+    outfile.write(tocstring)
 
 with open(Path(wikiroot, '_Footer.md'), 'w') as outfile:
     pass
 
 with open(Path(wikiroot, 'Home.md'), 'w') as outfile:
-    pass
+    outfile.write(tocstring)
 
