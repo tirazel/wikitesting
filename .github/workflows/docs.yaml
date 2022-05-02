@@ -22,6 +22,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: tirazel/ghaction-wiki-docs-publish@dev-main
+      - uses: tirazel/ghaction-wiki-docs-publish@main
         with:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
