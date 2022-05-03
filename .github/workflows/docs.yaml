@@ -22,10 +22,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-
-      - uses: ineshbose/wiki-action@v1
+      - uses: tirazel/ghaction-wiki-docs-publish@main
         with:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          WIKI_DIR: 'docs'
-          AUTO_SIDEBAR: true
